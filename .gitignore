@@ -1,0 +1,8 @@
+build*/
+.cache/
+log/
+.vscode
+.VSCodeCounter*/
+doc/
+__pycache__/
+ocm-parmgen.spec

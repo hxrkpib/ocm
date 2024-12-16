@@ -1,0 +1,61 @@
+@PACKAGE_INIT@
+
+find_package(spdlog REQUIRED)
+set(OCM_SPDLOG_INCLUDE_DIRS ${spdlog_INCLUDE_DIRS})
+set(OCM_SPDLOG_LIBRARIES spdlog::spdlog)
+set(OCM_INCLUDE_DIRS ${OCM_SPDLOG_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_SPDLOG_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(lcm REQUIRED)
+set(OCM_LCM_INCLUDE_DIRS ${LCM_INCLUDE_DIRS})
+set(OCM_LCM_LIBRARIES lcm::lcm)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_LCM_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_LCM_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(yaml-cpp REQUIRED)
+set(OCM_YAML-CPP_INCLUDE_DIRS ${YAML-CPP_INCLUDE_DIRS})
+set(OCM_YAML-CPP_LIBRARIES yaml-cpp::yaml-cpp)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_YAML-CPP_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_YAML-CPP_LIBRARIES} CACHE STRING "OCM libraries")
+
+
+find_package(rclcpp REQUIRED)
+set(OCM_RCLCPP_INCLUDE_DIRS ${RCLCPP_INCLUDE_DIRS})
+set(OCM_RCLCPP_LIBRARIES rclcpp::rclcpp)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_RCLCPP_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_RCLCPP_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(rosidl_typesupport_cpp REQUIRED)
+set(OCM_ROSIDL_TYPESUPPORT_CPP_INCLUDE_DIRS ${rosidl_typesupport_cpp_INCLUDE_DIRS})
+set(OCM_ROSIDL_TYPESUPPORT_CPP_LIBRARIES rosidl_typesupport_cpp::rosidl_typesupport_cpp)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_ROSIDL_TYPESUPPORT_CPP_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_ROSIDL_TYPESUPPORT_CPP_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(rosidl_typesupport_fastrtps_cpp REQUIRED)
+set(OCM_ROSIDL_TYPESUPPORT_FASTRTPS_CPP_INCLUDE_DIRS ${rosidl_typesupport_fastrtps_cpp_INCLUDE_DIRS})
+set(OCM_ROSIDL_TYPESUPPORT_FASTRTPS_CPP_LIBRARIES rosidl_typesupport_fastrtps_cpp::rosidl_typesupport_fastrtps_cpp)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_ROSIDL_TYPESUPPORT_FASTRTPS_CPP_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_ROSIDL_TYPESUPPORT_FASTRTPS_CPP_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(rosidl_default_generators REQUIRED)
+set(OCM_ROSIDL_DEFAULT_GENERATORS_INCLUDE_DIRS ${rosidl_default_generators_INCLUDE_DIRS})
+set(OCM_ROSIDL_DEFAULT_GENERATORS_LIBRARIES rosidl_default_generators::rosidl_default_generators)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_ROSIDL_DEFAULT_GENERATORS_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_ROSIDL_DEFAULT_GENERATORS_LIBRARIES} CACHE STRING "OCM libraries")
+
+
+
+# 查找 OCMTargets.cmake 文件
+find_path(OCM_TARGETS_PATH
+  NAMES OCMTargets.cmake
+  PATH_SUFFIXES lib/cmake/OCM
+  PATHS ${CMAKE_PREFIX_PATH}
+)
+
+# 检查是否找到文件并包含
+if(OCM_TARGETS_PATH)
+  message(STATUS "Find OCMTargets.cmake in ${OCM_TARGETS_PATH}")
+  include("${OCM_TARGETS_PATH}/OCMTargets.cmake")
+else()
+  message(FATAL_ERROR "OCMTargets.cmake not found in all CMAKE_PREFIX_PATH paths.")
+endif()

@@ -1,0 +1,91 @@
+executer_setting:
+  timer_setting:
+    timer_type: "EXTERNAL_TIMER"
+    period: 1
+  system_setting:
+    priority: 50
+    executer_cpu_affinity: [0]
+  idle_system_setting:
+    priority: 50
+    cpu_affinity: [0]
+  all_priority_enable: false
+  all_cpu_affinity_enable: false
+
+#--------------------------------------
+task_list:
+  #--------------------------------------
+  resident_group:
+    # --------------------------------------
+    - task_name: "resident_task_1"
+      node_list:
+        - node_name: "NodeA"
+          output_enable: True
+      timer_setting:
+        timer_type: "EXTERNAL_TIMER"
+        period: 1
+      system_setting:
+        priority: 50
+        cpu_affinity: [0]
+      launch_setting:
+        pre_node: []
+        delay: 0
+
+  #--------------------------------------
+  standby_group:
+    # --------------------------------------
+    - task_name: "standby_task_1"
+      node_list:
+        - node_name: "NodeB"
+          output_enable: True
+      timer_setting:
+        timer_type: "EXTERNAL_TIMER"
+        period: 1
+      system_setting:
+        priority: 50
+        cpu_affinity: [0]
+
+    # --------------------------------------
+    - task_name: "standby_task_2"
+      node_list:
+        - node_name: "NodeC"
+          output_enable: True
+      timer_setting:
+        timer_type: "EXTERNAL_TIMER"
+        period: 1
+      system_setting:
+        priority: 50
+        cpu_affinity: [0]
+
+    # --------------------------------------
+    - task_name: "standby_task_3"
+      node_list:
+        - node_name: "NodeC"
+          output_enable: True
+        - node_name: "NodeD"
+          output_enable: True
+      timer_setting:
+        timer_type: "EXTERNAL_TIMER"
+        period: 1
+      system_setting:
+        priority: 50
+        cpu_affinity: [0]
+
+exclusive_task_group:
+  #--------------------------------------
+  - group_name: "passive"
+    task_list:
+      # --------------------------------------
+      - task_name: "standby_task_1"
+        force_init_node: []
+        pre_node: []
+      # --------------------------------------
+      - task_name: "standby_task_2"
+        force_init_node: []
+        pre_node: []
+
+  - group_name: "pdstand"
+    task_list:
+      # --------------------------------------
+      - task_name: "standby_task_3"
+        force_init_node: []
+        pre_node: []

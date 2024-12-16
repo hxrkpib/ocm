@@ -1,0 +1,4 @@
+struct MyData {
+    int32_t count;
+    int32_t values[10];
+}

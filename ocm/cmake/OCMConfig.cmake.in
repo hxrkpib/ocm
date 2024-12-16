@@ -1,0 +1,34 @@
+@PACKAGE_INIT@
+
+find_package(spdlog REQUIRED)
+set(OCM_SPDLOG_INCLUDE_DIRS ${spdlog_INCLUDE_DIRS})
+set(OCM_SPDLOG_LIBRARIES spdlog::spdlog)
+set(OCM_INCLUDE_DIRS ${OCM_SPDLOG_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_SPDLOG_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(lcm REQUIRED)
+set(OCM_LCM_INCLUDE_DIRS ${LCM_INCLUDE_DIRS})
+set(OCM_LCM_LIBRARIES lcm::lcm)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_LCM_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_LCM_LIBRARIES} CACHE STRING "OCM libraries")
+
+find_package(yaml-cpp REQUIRED)
+set(OCM_YAML-CPP_INCLUDE_DIRS ${YAML-CPP_INCLUDE_DIRS})
+set(OCM_YAML-CPP_LIBRARIES yaml-cpp::yaml-cpp)
+set(OCM_INCLUDE_DIRS ${OCM_INCLUDE_DIRS} ${OCM_YAML-CPP_INCLUDE_DIRS} CACHE STRING "OCM include directories")
+set(OCM_LIBRARIES ${OCM_LIBRARIES} ${OCM_YAML-CPP_LIBRARIES} CACHE STRING "OCM libraries")
+
+# 查找 OCMTargets.cmake 文件
+find_path(OCM_TARGETS_PATH
+  NAMES OCMTargets.cmake
+  PATH_SUFFIXES lib/cmake/OCM
+  PATHS ${CMAKE_PREFIX_PATH}
+)
+
+# 检查是否找到文件并包含
+if(OCM_TARGETS_PATH)
+  message(STATUS "Find OCMTargets.cmake in ${OCM_TARGETS_PATH}")
+  include("${OCM_TARGETS_PATH}/OCMTargets.cmake")
+else()
+  message(FATAL_ERROR "OCMTargets.cmake not found in all CMAKE_PREFIX_PATH paths.")
+endif()
